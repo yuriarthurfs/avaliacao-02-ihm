@@ -28,40 +28,58 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [cliente, setCliente] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
-      
-      if (user) {
-        // Buscar dados do administrador no Supabase
-        const { data: adminData } = await supabase
-          .from('administradores')
-          .select('*')
-          .eq('firebase_uid', user.uid)
-          .single();
-        
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    setLoading(true);
+    setUser(firebaseUser);
+    setAdmin(null);
+    setCliente(null);
+
+    if (firebaseUser) {
+      const email = firebaseUser.email;
+
+      /** ----------------------------
+       * 1) BUSCAR ADMIN POR UID
+       * ---------------------------- */
+      const { data: adminData } = await supabase
+        .from('administradores')
+        .select('*')
+        .eq('firebase_uid', firebaseUser.uid)
+        .single();
+
+      if (adminData) {
         setAdmin(adminData);
-
-        // Se não for admin, buscar dados do cliente
-        if (!adminData) {
-          const { data: clienteData } = await supabase
-            .from('clientes')
-            .select('*')
-            .eq('firebase_uid', user.uid)
-            .single();
-          
-          setCliente(clienteData);
-        }
-      } else {
-        setAdmin(null);
-        setCliente(null);
+        setLoading(false);
+        return;
       }
-      
-      setLoading(false);
-    });
 
-    return unsubscribe;
-  }, []);
+      /** ----------------------------
+       * 2) BUSCAR CLIENTE PELO EMAIL
+       *    clientes.emails é text[]
+       * ---------------------------- */
+      const { data: clienteData, error } = await supabase
+        .from('clientes')
+        .select('*')
+        .contains('emails', [email]);  // <<--- AQUI ESTÁ A MÁGICA
+
+      if (error) {
+        console.error('Erro ao buscar cliente:', error);
+      }
+
+      if (clienteData && clienteData.length > 0) {
+        setCliente(clienteData[0]);
+      }
+    } else {
+      setAdmin(null);
+      setCliente(null);
+    }
+
+    setLoading(false);
+  });
+
+  return unsubscribe;
+}, []);
+
 
   const signIn = async (email: string, password: string) => {
     await signInWithEmailAndPassword(auth, email, password);
