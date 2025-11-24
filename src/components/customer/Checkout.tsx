@@ -177,8 +177,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     } else {
       onBack?.();
     }
-    
-    
     alert('Pedido realizado com sucesso! Você receberá um e-mail de confirmação.');
     
     navigate('/');
