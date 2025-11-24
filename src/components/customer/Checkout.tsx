@@ -170,9 +170,11 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
 
     clearCart();
-    setIsCartOpen(false);
+    setIsCartOpen(false);  // fecha o carrinho
+    onBack();              // fecha o checkout (importante!)
+    
     alert('Pedido realizado com sucesso! Você receberá um e-mail de confirmação.');
-    onBack();
+    
     navigate('/');
   } catch (error) {
     console.error('Erro ao processar pedido:', error);
