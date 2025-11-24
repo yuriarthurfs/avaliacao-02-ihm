@@ -171,7 +171,13 @@ const handleSubmit = async (e: React.FormEvent) => {
 
     clearCart();
     setIsCartOpen(false);  // fecha o carrinho
-    onBack();              // fecha o checkout (importante!)
+    onBack();
+    if (onBack) {
+      onBack();
+    } else {
+      onBack?.();
+    }
+    
     
     alert('Pedido realizado com sucesso! Você receberá um e-mail de confirmação.');
     
