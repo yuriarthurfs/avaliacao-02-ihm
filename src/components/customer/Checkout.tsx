@@ -102,6 +102,7 @@ export const Checkout = ({ onBack }: CheckoutProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    const navigate = useNavigate();
 
     try {
       // Simular processamento do pedido
