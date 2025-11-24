@@ -132,7 +132,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     // Montar itens no mesmo formato usado no VendaForm (admin)
     const itensVenda = cartItems.map((item) => ({
       produto_id: item.id,
-      codigo_empresa: null, // se sua coluna permitir null; se não, grave o código no CartItem também
+      codigo_empresa: null,
       descricao: item.nome,
       quantidade: item.quantidade,
       preco_unitario: item.preco,
