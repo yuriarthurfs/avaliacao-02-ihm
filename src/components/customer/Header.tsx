@@ -13,8 +13,6 @@ export const Header = () => {
   const { getTotalItems, setIsCartOpen } = useCart();
   const { user, cliente, logout } = useAuth();
 
-  console.log(user, cliente)
-
   const handleLogout = async () => {
     await logout();
     setIsProfileMenuOpen(false);
