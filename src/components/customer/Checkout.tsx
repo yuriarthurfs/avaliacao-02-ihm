@@ -6,6 +6,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card, CardContent, CardHeader } from '../ui/Card';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 interface CheckoutProps {
   onBack: () => void;
