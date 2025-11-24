@@ -81,7 +81,7 @@ export const Header = () => {
               </Button>
 
               {/* Login Dropdown */}
-              {user (
+              {user ?(
                 // Menu do usuário logado
                 <div className="relative">
                   <button
