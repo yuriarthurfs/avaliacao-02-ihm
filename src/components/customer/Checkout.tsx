@@ -24,6 +24,7 @@ export const Checkout = ({ onBack }: CheckoutProps) => {
   const { cartItems, getTotalPrice, clearCart, setIsCartOpen } = useCart();
   const [formasPagamento, setFormasPagamento] = useState<FormaPagamento[]>([]);
   const [loading, setLoading] = useState(false);
+  const { cliente, user } = useAuth();
   
   const [formData, setFormData] = useState({
     // Dados do Cliente
