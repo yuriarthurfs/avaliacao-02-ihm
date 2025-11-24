@@ -129,17 +129,14 @@ const handleSubmit = async (e: React.FormEvent) => {
     const shipping = 15.9;
     const total = subtotal + shipping - discount;
 
-    // Montar itens no mesmo formato usado no VendaForm (admin)
     const itensVenda = cartItems.map((item) => ({
       produto_id: item.id,
-      codigo_empresa: null,
       descricao: item.nome,
       quantidade: item.quantidade,
       preco_unitario: item.preco,
       subtotal: item.preco * item.quantidade,
     }));
 
-    // Montar dados de entrega a partir do formulário
     const dadosEntrega = {
       rua: formData.rua,
       numero: formData.numero,
@@ -153,15 +150,15 @@ const handleSubmit = async (e: React.FormEvent) => {
       email: formData.email,
     };
 
-    // Inserir na tabela "vendas"
     const { error } = await supabase.from('vendas').insert({
+      // id: gerado automaticamente pelo banco
       cliente_id: cliente.id,
-      administrador_id: null, // venda feita pelo cliente, sem admin
-      items: itensVenda,
-      valor_total: total,
-      valor_impostos_frete: shipping, // ou outro campo que você estiver usando
-      forma_pagamento_id: selectedPayment?.id ?? null,
-      dados_entrega: dadosEntrega,
+      administrador_id: 'f8806527-43ee-43f8-9072-e3b937803fc2', // 👈 FIX AQUI
+      items: itensVenda,              // jsonb
+      valor_total: total,             // numeric
+      valor_impostos_frete: shipping, // numeric
+      forma_pagamento_id: selectedPayment?.id ?? null, // se a coluna aceitar null
+      dados_entrega: dadosEntrega,    // jsonb
       status: 'pendente',
     });
 
@@ -172,10 +169,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       return;
     }
 
-    // Se chegou aqui, gravou a venda com sucesso ✅
     clearCart();
     setIsCartOpen(false);
-
     alert('Pedido realizado com sucesso! Você receberá um e-mail de confirmação.');
     navigate('/');
   } catch (error) {
@@ -185,7 +180,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     setLoading(false);
   }
 };
-
 
   const buscarCEP = async (cep: string) => {
     if (cep.length === 8) {
