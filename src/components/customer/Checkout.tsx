@@ -111,6 +111,7 @@ export const Checkout = ({ onBack }: CheckoutProps) => {
       setIsCartOpen(false);
       
       alert('Pedido realizado com sucesso! Você receberá um email de confirmação.');
+      navigate('/');
     } catch (error) {
       console.error('Erro ao processar pedido:', error);
       alert('Erro ao processar pedido. Tente novamente.');
