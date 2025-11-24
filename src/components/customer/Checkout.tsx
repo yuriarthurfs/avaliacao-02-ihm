@@ -101,28 +101,91 @@ export const Checkout = ({ onBack }: CheckoutProps) => {
     return labels[tipo as keyof typeof labels] || tipo;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const navigate = useNavigate();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  const navigate = useNavigate();
 
-    try {
-      // Simular processamento do pedido
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Limpar carrinho
-      clearCart();
-      setIsCartOpen(false);
-      
-      alert('Pedido realizado com sucesso! Você receberá um email de confirmação.');
-      navigate('/');
-    } catch (error) {
-      console.error('Erro ao processar pedido:', error);
-      alert('Erro ao processar pedido. Tente novamente.');
-    } finally {
+  try {
+    if (!cliente) {
+      alert('É necessário estar logado como cliente para finalizar o pedido.');
       setLoading(false);
+      return;
     }
-  };
+
+    if (cartItems.length === 0) {
+      alert('Seu carrinho está vazio.');
+      setLoading(false);
+      return;
+    }
+
+    const subtotal = getTotalPrice();
+    const selectedPayment = formasPagamento.find(
+      (fp) => fp.id === formData.formaPagamentoId
+    );
+    const discount = selectedPayment
+      ? (subtotal * selectedPayment.descontos_acrescimos) / 100
+      : 0;
+    const shipping = 15.9;
+    const total = subtotal + shipping - discount;
+
+    // Montar itens no mesmo formato usado no VendaForm (admin)
+    const itensVenda = cartItems.map((item) => ({
+      produto_id: item.id,
+      codigo_empresa: null, // se sua coluna permitir null; se não, grave o código no CartItem também
+      descricao: item.nome,
+      quantidade: item.quantidade,
+      preco_unitario: item.preco,
+      subtotal: item.preco * item.quantidade,
+    }));
+
+    // Montar dados de entrega a partir do formulário
+    const dadosEntrega = {
+      rua: formData.rua,
+      numero: formData.numero,
+      complemento: formData.complemento,
+      bairro: formData.bairro,
+      cidade: formData.cidade,
+      estado: formData.estado,
+      cep: formData.cep,
+      nome_contato: formData.nome,
+      telefone: formData.telefone,
+      email: formData.email,
+    };
+
+    // Inserir na tabela "vendas"
+    const { error } = await supabase.from('vendas').insert({
+      cliente_id: cliente.id,
+      administrador_id: null, // venda feita pelo cliente, sem admin
+      items: itensVenda,
+      valor_total: total,
+      valor_impostos_frete: shipping, // ou outro campo que você estiver usando
+      forma_pagamento_id: selectedPayment?.id ?? null,
+      dados_entrega: dadosEntrega,
+      status: 'pendente',
+    });
+
+    if (error) {
+      console.error('Erro ao salvar venda:', error);
+      alert('Erro ao salvar venda. Verifique os dados e tente novamente.');
+      setLoading(false);
+      return;
+    }
+
+    // Se chegou aqui, gravou a venda com sucesso ✅
+    clearCart();
+    setIsCartOpen(false);
+
+    alert('Pedido realizado com sucesso! Você receberá um e-mail de confirmação.');
+    navigate('/');
+  } catch (error) {
+    console.error('Erro ao processar pedido:', error);
+    alert('Erro ao processar pedido. Tente novamente.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const buscarCEP = async (cep: string) => {
     if (cep.length === 8) {
