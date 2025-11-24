@@ -326,7 +326,6 @@ export const Home = () => {
                       </div>
 
                       <Button
-                        onClick={() => handleAddToCart(produto)}
                         className="w-full"
                         disabled={produto.quantidade_estoque === 0}
                         onClick={(e) => {

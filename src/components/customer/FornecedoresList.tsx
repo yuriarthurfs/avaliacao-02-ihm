@@ -121,7 +121,7 @@ export const FornecedoresList = ({ onBack }: FornecedoresListProps) => {
         <Card>
           <CardContent className="p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              {selectedFornecedor.telefones.length > 0 && (
+              {selectedFornecedor.telefones && selectedFornecedor.telefones.length > 0 && (
                 <div className="flex items-center space-x-2">
                   <Phone className="w-4 h-4 text-gray-500" />
                   <span>{selectedFornecedor.telefones[0]}</span>
@@ -270,13 +270,13 @@ export const FornecedoresList = ({ onBack }: FornecedoresListProps) => {
                     </h3>
                     
                     <div className="space-y-2 text-sm text-gray-600">
-                      {fornecedor.telefones.length > 0 && (
+                      {fornecedor.telefones && fornecedor.telefones.length > 0 && (
                         <div className="flex items-center space-x-2">
                           <Phone className="w-4 h-4" />
                           <span>{fornecedor.telefones[0]}</span>
                         </div>
                       )}
-                      
+
                       <div className="flex items-center space-x-2">
                         <Mail className="w-4 h-4" />
                         <span className="truncate">{fornecedor.email}</span>
