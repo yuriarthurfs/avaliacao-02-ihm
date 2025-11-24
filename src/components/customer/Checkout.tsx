@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card, CardContent, CardHeader } from '../ui/Card';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface CheckoutProps {
   onBack: () => void;
