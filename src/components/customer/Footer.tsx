@@ -113,7 +113,7 @@ export const Footer = () => {
                 <MapPin size={16} className="text-blue-400 mt-1" />
                 <span className="text-gray-400">
                   Rua Halfeld<br />
-                  Centro, São Paulo - SP<br />
+                  Juiz de Fora - MG<br />
                   CEP: 01234-567
                 </span>
               </div>
