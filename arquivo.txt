@@ -1,0 +1,11 @@
+# Firebase Configuration
+VITE_FIREBASE_API_KEY="AIzaSyAo-U0txzHBgFoMsrqxfz0kcPiXxPesVVY"
+VITE_FIREBASE_AUTH_DOMAIN="ihm-lovisi.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID="ihm-lovisi"
+VITE_FIREBASE_STORAGE_BUCKET="ihm-lovisi.firebasestorage.app"
+VITE_FIREBASE_MESSAGING_SENDER_ID="538160665538"
+VITE_FIREBASE_APP_ID="1:538160665538:web:a7cae91c2b5a5b5960fc5b"
+
+# Supabase Configuration
+VITE_SUPABASE_URL=https://hrehgdcrcubzzgsadnzq.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyZWhnZGNyY3Vienpnc2FkbnpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NzAxNTIsImV4cCI6MjA3ODU0NjE1Mn0.bNeOl7snS4OBv0naA_Y50RFQ0bzJ1lJM-xkTZZ4EVCU
