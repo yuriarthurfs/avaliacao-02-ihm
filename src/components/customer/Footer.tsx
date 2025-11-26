@@ -112,7 +112,7 @@ export const Footer = () => {
               <div className="flex items-start space-x-3">
                 <MapPin size={16} className="text-blue-400 mt-1" />
                 <span className="text-gray-400">
-                  Rua das Flores, 123<br />
+                  Rua Halfeld<br />
                   Centro, São Paulo - SP<br />
                   CEP: 01234-567
                 </span>
