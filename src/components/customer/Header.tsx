@@ -208,7 +208,7 @@ export const Header = () => {
                   Início
                 </Link>
                 <Link
-                  to="/produtos"
+                  to="/"
                   className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
