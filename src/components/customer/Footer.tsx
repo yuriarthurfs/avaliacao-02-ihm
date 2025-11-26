@@ -114,7 +114,6 @@ export const Footer = () => {
                 <span className="text-gray-400">
                   Rua Halfeld<br />
                   Juiz de Fora - MG<br />
-                  CEP: 01234-567
                 </span>
               </div>
             </div>
