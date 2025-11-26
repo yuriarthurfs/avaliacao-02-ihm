@@ -39,7 +39,7 @@ export const Header = () => {
               <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Produtos
               </Link>
-              <Link to="/categorias" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Categorias
               </Link>
               <Link to="/ofertas" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
