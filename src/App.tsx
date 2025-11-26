@@ -7,6 +7,7 @@ import { LoginForm } from './components/auth/LoginForm';
 import { ClienteLoginForm } from './components/auth/ClienteLoginForm';
 import { FornecedorLoginForm } from './components/auth/FornecedorLoginForm';
 import { Home } from './pages/customer/Home';
+import { SupplierProducts } from './pages/customer/SupplierProducts';
 import { Dashboard } from './pages/admin/Dashboard';
 import { Produtos } from './pages/admin/Produtos';
 import { Vendas } from './pages/admin/Vendas';
@@ -45,7 +46,15 @@ const AppRoutes = () => {
           </CustomerLayout>
         }
       />
-      
+      <Route
+        path="/supplier/:supplierId"
+        element={
+          <CustomerLayout>
+            <SupplierProducts />
+          </CustomerLayout>
+        }
+      />
+
       {/* Auth Routes */}
       <Route path="/login" element={<LoginForm />} />
       <Route path="/login/cliente" element={<ClienteLoginForm />} />

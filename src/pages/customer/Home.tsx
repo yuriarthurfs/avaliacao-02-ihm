@@ -28,6 +28,7 @@ export const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('todos');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
+  const [sortOrder, setSortOrder] = useState('default');
   const { addToCart, cartItems } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Produto | null>(null);
   const [showFornecedores, setShowFornecedores] = useState(false);
@@ -68,9 +69,24 @@ export const Home = () => {
   const filteredProdutos = produtos.filter(produto => {
     const matchesSearch = produto.descricao_abreviada.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          produto.codigo_empresa.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPrice = produto.preco_ultima_venda >= priceRange.min && 
+    const matchesPrice = produto.preco_ultima_venda >= priceRange.min &&
                         produto.preco_ultima_venda <= priceRange.max;
     return matchesSearch && matchesPrice;
+  });
+
+  const sortedProdutos = [...filteredProdutos].sort((a, b) => {
+    switch (sortOrder) {
+      case 'price-low':
+        return a.preco_ultima_venda - b.preco_ultima_venda;
+      case 'price-high':
+        return b.preco_ultima_venda - a.preco_ultima_venda;
+      case 'name':
+        return a.descricao_abreviada.localeCompare(b.descricao_abreviada);
+      case 'best-sellers':
+        return b.quantidade_estoque - a.quantidade_estoque;
+      default:
+        return 0;
+    }
   });
 
   const handleAddToCart = (produto: Produto) => {
@@ -217,12 +233,16 @@ export const Home = () => {
               </h2>
               
               <div className="flex items-center space-x-4">
-                <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option>Ordenar por</option>
-                  <option>Menor preço</option>
-                  <option>Maior preço</option>
-                  <option>Mais vendidos</option>
-                  <option>Avaliação</option>
+                <select
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="default">Ordenar por</option>
+                  <option value="price-low">Menor preço</option>
+                  <option value="price-high">Maior preço</option>
+                  <option value="best-sellers">Mais vendidos</option>
+                  <option value="name">Nome</option>
                 </select>
               </div>
             </div>
@@ -237,7 +257,7 @@ export const Home = () => {
                   </div>
                 ))}
               </div>
-            ) : filteredProdutos.length === 0 ? (
+            ) : sortedProdutos.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 mb-4">
                   <Search size={48} className="mx-auto" />
@@ -251,7 +271,7 @@ export const Home = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProdutos.map((produto) => (
+                {sortedProdutos.map((produto) => (
                   <Card key={produto.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
                     <div className="relative overflow-hidden rounded-t-lg">
                       <img

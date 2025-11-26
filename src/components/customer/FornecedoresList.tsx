@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Building, MapPin, Phone, Mail, Package, ArrowLeft } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { Card, CardContent, CardHeader } from '../ui/Card';
@@ -31,6 +32,7 @@ interface FornecedoresListProps {
 }
 
 export const FornecedoresList = ({ onBack }: FornecedoresListProps) => {
+  const navigate = useNavigate();
   const [fornecedores, setFornecedores] = useState<Fornecedor[]>([]);
   const [selectedFornecedor, setSelectedFornecedor] = useState<Fornecedor | null>(null);
   const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -293,7 +295,14 @@ export const FornecedoresList = ({ onBack }: FornecedoresListProps) => {
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-gray-200">
-                      <Button size="sm" className="w-full">
+                      <Button
+                        size="sm"
+                        className="w-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/supplier/${fornecedor.id}`);
+                        }}
+                      >
                         Ver Produtos
                       </Button>
                     </div>
